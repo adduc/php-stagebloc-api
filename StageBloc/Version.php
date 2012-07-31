@@ -4,10 +4,13 @@
  *
  * @category  Services
  * @package   Services_StageBloc
- * @author    Anton Lindqvist <anton@qvister.se>
- * @copyright 2010 Anton Lindqvist <anton@qvister.se>
+ * @author    Josh Holat <bumblebee@stagebloc.com>
+ * @copyright 2012 Josh Holat <bumblebee@stagebloc.com>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://github.com/mptre/php-soundcloud
+ * @link      http://github.com/stagebloc/php-sb-connect
+ *
+ * This code was adapted from the SoundCloud API wrapper by Anton Lindqvist <anton@qvister.se>.
+ *
  */
 class Services_StageBloc_Version
 {
