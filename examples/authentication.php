@@ -2,13 +2,9 @@
 
 require_once '../StageBloc.php';
 
-//$clientId = '<YOUR CLIENT ID>';
-//$clientSecret = '<YOUR CLIENT SECRET>';
-//$redirectUri = '<YOUR REDIRECT URI>';
-
-$clientId = '809d6e0bd9a36f4f9482f52603bb081d';
-$clientSecret = '465ab4e6db4e875620f50ca12950f102';
-$redirectUri = 'http://localhost/oauth/example/client.php';
+$clientId = '<YOUR CLIENT ID>';
+$clientSecret = '<YOUR CLIENT SECRET>';
+$redirectUri = '<YOUR REDIRECT URI>';
 
 $stagebloc = new Services_StageBloc($clientId, $clientSecret, $redirectUri);
 

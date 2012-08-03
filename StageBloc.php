@@ -39,12 +39,12 @@ class Services_StageBloc
     /**
      * Version of the API to use
      *
-     * @var integer
+     * @var string
      *
      * @access private
      * @static
      */
-    private static $_apiVersion = 1;
+    private static $_apiVersion = 2.0;
 
     /**
      * Supported audio MIME types
@@ -189,7 +189,6 @@ class Services_StageBloc
      * @static
      */
     private static $_responseFormats = array(
-        '*' => '*/*',
         'json' => 'application/json',
         'xml' => 'application/xml'
     );
@@ -227,7 +226,7 @@ class Services_StageBloc
         $this->_clientSecret = $clientSecret;
         $this->_redirectUri = $redirectUri;
         $this->_development = $development;
-        $this->_responseFormat = self::$_responseFormats['json'];
+        $this->_responseFormat = self::$_responseFormats['xml'];
         $this->_curlOptions = self::$_curlDefaultOptions;
         $this->_curlOptions[CURLOPT_USERAGENT] .= $this->_getUserAgent();
     }
@@ -671,6 +670,8 @@ class Services_StageBloc
             $params['consumer_key'] = $this->_clientId;
         }
 
+		$responseFormatParts = explode('/', $this->_responseFormat);
+
         if (preg_match('/^https?\:\/\//', $path)) {
             $url = $path;
         } else {
@@ -680,8 +681,8 @@ class Services_StageBloc
                 ? self::$_domains['development']
                 : self::$_domains['production'];
             $url .= '/';
-            $url .= ($includeVersion) ? 'v' . self::$_apiVersion . '/' : '';
-            $url .= $path;
+            $url .= ($includeVersion) ? number_format(self::$_apiVersion, 1) . '/' : '';
+            $url .= $path . '.' . end($responseFormatParts);
         }
 
         $url .= (count($params)) ? '?' . http_build_query($params) : '';

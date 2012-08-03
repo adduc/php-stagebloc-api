@@ -16,6 +16,8 @@ Before being able to access any data related to an account, you'll first need to
 
 ### Authentication
 
+The authentication flow is explained below. There is also an example in `examples/authentication.php`.
+
 1. The first step is to create a StageBloc object.
 
         $clientId = '<YOUR CLIENT ID>';
