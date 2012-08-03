@@ -159,7 +159,7 @@ class Services_StageBloc
      */
     private static $_paths = array(
         'authorize' => 'connect',
-        'access_token' => 'oauth2/token',
+        'access_token' => '2.0/oauth2/token/',
     );
 
     /**
@@ -202,7 +202,7 @@ class Services_StageBloc
      * @access private
      * @static
      */
-    private static $_userAgent = 'PHP-StageBLoc';
+    private static $_userAgent = 'PHP-StageBloc';
 
     /**
      * Class constructor
@@ -674,7 +674,7 @@ class Services_StageBloc
         if (preg_match('/^https?\:\/\//', $path)) {
             $url = $path;
         } else {
-            $url = 'https://';
+            $url = 'http://';
             $url .= (!preg_match('/connect/', $path)) ? 'api.' : '';
             $url .= ($this->_development)
                 ? self::$_domains['development']
