@@ -682,7 +682,7 @@ class Services_StageBloc
                 : self::$_domains['production'];
             $url .= '/';
             $url .= ($includeVersion) ? number_format(self::$_apiVersion, 1) . '/' : '';
-            $url .= $path . '.' . end($responseFormatParts);
+            $url .= $path . ($includeVersion ? '.' . end($responseFormatParts) : '' );
         }
 
         $url .= (count($params)) ? '?' . http_build_query($params) : '';

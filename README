@@ -42,6 +42,10 @@ The authentication flow is explained below. There is also an example in `example
       	 }
       	 
    The access token will allow you to use the StageBloc API to perform requests for the user.
+   
+### Requests
+
+You can see how to setup requests in `examples/request.php`.
 
 ## Feedback And Questions
 
