@@ -15,7 +15,7 @@ if ( ! empty($_GET) && isset($_GET['accessToken']) )
 
 $stagebloc = new Services_StageBloc($clientId, $clientSecret, $redirectUri);
 $stagebloc->setAccessToken($accessToken);
-$stagebloc->setResponseFormat('json'); // XML is default, JSON is also accepted
+$stagebloc->setResponseFormat('xml'); // XML is default, JSON is also accepted
 
 $items = $stagebloc->get('statuses/list');
 
