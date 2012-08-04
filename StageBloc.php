@@ -7,10 +7,13 @@ require_once 'StageBloc/Version.php';
  *
  * @category  Services
  * @package   Services_StageBloc
- * @author    Anton Lindqvist <anton@qvister.se>
- * @copyright 2010 Anton Lindqvist <anton@qvister.se>
+ * @author    Josh Holat <bumblebee@stagebloc.com>
+ * @copyright 2012 Josh Holat <bumblebee@stagebloc.com>
  * @license   http://www.opensource.org/licenses/mit-license.php MIT
- * @link      http://github.com/mptre/php-soundcloud
+ * @link      http://github.com/stagebloc/php-sb-connect
+ *
+ * This code was adapted from the SoundCloud API wrapper by Anton Lindqvist <anton@qvister.se>.
+ *
  */
 class Services_StageBloc
 {
@@ -36,12 +39,12 @@ class Services_StageBloc
     /**
      * Version of the API to use
      *
-     * @var integer
+     * @var string
      *
      * @access private
      * @static
      */
-    private static $_apiVersion = 1;
+    private static $_apiVersion = 2.0;
 
     /**
      * Supported audio MIME types
@@ -116,7 +119,7 @@ class Services_StageBloc
      */
     private static $_domains = array(
         'development' => 'stagebloc.com/sandbox/',
-        'production' => 'stagebloc.com'
+        'production' => 'stagebloc.local'
     );
 
     /**
@@ -156,7 +159,7 @@ class Services_StageBloc
      */
     private static $_paths = array(
         'authorize' => 'connect',
-        'access_token' => 'oauth2/token',
+        'access_token' => '2.0/oauth2/token/',
     );
 
     /**
@@ -186,7 +189,6 @@ class Services_StageBloc
      * @static
      */
     private static $_responseFormats = array(
-        '*' => '*/*',
         'json' => 'application/json',
         'xml' => 'application/xml'
     );
@@ -199,7 +201,7 @@ class Services_StageBloc
      * @access private
      * @static
      */
-    private static $_userAgent = 'PHP-StageBLoc';
+    private static $_userAgent = 'PHP-StageBloc';
 
     /**
      * Class constructor
@@ -224,7 +226,7 @@ class Services_StageBloc
         $this->_clientSecret = $clientSecret;
         $this->_redirectUri = $redirectUri;
         $this->_development = $development;
-        $this->_responseFormat = self::$_responseFormats['json'];
+        $this->_responseFormat = self::$_responseFormats['xml'];
         $this->_curlOptions = self::$_curlDefaultOptions;
         $this->_curlOptions[CURLOPT_USERAGENT] .= $this->_getUserAgent();
     }
@@ -460,12 +462,12 @@ class Services_StageBloc
      *
      * You could pass two arguments when adding a single option.
      * <code>
-     * $soundcloud->setCurlOptions(CURLOPT_SSL_VERIFYHOST, 0);
+     * $stagebloc->setCurlOptions(CURLOPT_SSL_VERIFYHOST, 0);
      * </code>
      *
      * You could also pass an associative array when adding multiple options.
      * <code>
-     * $soundcloud->setCurlOptions(array(
+     * $stagebloc->setCurlOptions(array(
      *     CURLOPT_SSL_VERIFYHOST => 0,
      *    CURLOPT_SSL_VERIFYPEER => 0
      * ));
@@ -552,7 +554,7 @@ class Services_StageBloc
      * @return mixed
      *
      * @access public
-     * @see Soundcloud::_request()
+     * @see StageBloc::_request()
      */
     function get($path, $params = array(), $curlOptions = array())
     {
@@ -571,7 +573,7 @@ class Services_StageBloc
      * @return mixed
      *
      * @access public
-     * @see Soundcloud::_request()
+     * @see StageBloc::_request()
      */
     function post($path, $postData = array(), $curlOptions = array())
     {
@@ -628,77 +630,6 @@ class Services_StageBloc
     }
 
     /**
-     * Download track
-     *
-     * @param integer $trackId     Track id to download
-     * @param array   $params      Optional query string parameters
-     * @param array   $curlOptions Optional cURL options
-     *
-     * @return mixed
-     *
-     * @access public
-     * @see StageBloc::_request()
-     */
-    function download($trackId, $params = array(), $curlOptions = array())
-    {
-        $lastResponseFormat = array_pop(explode('/', $this->getResponseFormat()));
-        $defaultParams = array('oauth_token' => $this->getAccessToken());
-        $defaultCurlOptions = array(
-            CURLOPT_FOLLOWLOCATION => true,
-            self::CURLOPT_OAUTH_TOKEN => false
-        );
-        $url = $this->_buildUrl(
-            'tracks/' . $trackId . '/download',
-            array_merge($defaultParams, $params)
-        );
-        $options = $defaultCurlOptions + $curlOptions;
-
-        $this->setResponseFormat('*');
-
-        $response = $this->_request($url, $options);
-
-        // rollback to the previously defined response format.
-        $this->setResponseFormat($lastResponseFormat);
-
-        return $response;
-    }
-
-    /**
-     * Update a existing playlist
-     *
-     * @param integer $playlistId       The playlist id
-     * @param array   $trackIds         Tracks to add to the playlist
-     * @param array   $optionalPostData Optional playlist fields to update
-     *
-     * @return mixed
-     *
-     * @access public
-     * @see Soundcloud::_request()
-     */
-    public function updatePlaylist($playlistId, $trackIds, $optionalPostData = null)
-    {
-        $url = $this->_buildUrl('playlists/' . $playlistId);
-        $postData = array_map(function ($track) {
-            return 'playlist[tracks][][id]=' . $track;
-        }, $trackIds);
-
-        if (is_array($optionalPostData)) {
-            foreach ($optionalPostData as $key => $val) {
-                array_push($postData, 'playlist[' . $key . ']=' . $val);
-            }
-        }
-
-        $postData = implode('&', $postData);
-        $curlOptions = array(
-            CURLOPT_CUSTOMREQUEST => 'PUT',
-            CURLOPT_HTTPHEADER => array('Content-Length' => strlen($postData)),
-            CURLOPT_POSTFIELDS => $postData
-        );
-
-        return $this->_request($url, $curlOptions);
-    }
-
-    /**
      * Construct default HTTP request headers
      *
      * @param boolean $includeAccessToken Include access token
@@ -739,17 +670,19 @@ class Services_StageBloc
             $params['consumer_key'] = $this->_clientId;
         }
 
+		$responseFormatParts = explode('/', $this->_responseFormat);
+
         if (preg_match('/^https?\:\/\//', $path)) {
             $url = $path;
         } else {
-            $url = 'https://';
+            $url = 'http://';
             $url .= (!preg_match('/connect/', $path)) ? 'api.' : '';
             $url .= ($this->_development)
                 ? self::$_domains['development']
                 : self::$_domains['production'];
             $url .= '/';
-            $url .= ($includeVersion) ? 'v' . self::$_apiVersion . '/' : '';
-            $url .= $path;
+            $url .= ($includeVersion) ? number_format(self::$_apiVersion, 1) . '/' : '';
+            $url .= $path . ($includeVersion ? '.' . end($responseFormatParts) : '' );
         }
 
         $url .= (count($params)) ? '?' . http_build_query($params) : '';
