@@ -118,8 +118,8 @@ class Services_StageBloc
      * @static
      */
     private static $_domains = array(
-        'development' => 'stagebloc.com/sandbox/',
-        'production' => 'stagebloc.local'
+        'development' => 'stagebloc.com/sandbox/', // Note: This doesn't actually exist yet
+        'production' => 'stagebloc.com'
     );
 
     /**
