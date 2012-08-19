@@ -1,11 +1,7 @@
 <?php
 
 require_once '../StageBloc.php';
-
-$clientId = '<YOUR CLIENT ID>';
-$clientSecret = '<YOUR CLIENT SECRET>';
-$redirectUri = '<YOUR REDIRECT URI>';
-$accessToken = '<YOUR ACCESS TOKEN>'; // This can be received using authentication.php
+require_once 'info.php';
 
 // If sent here from authentication.php, we can grab the access token from there
 if ( ! empty($_GET) && isset($_GET['accessToken']) )

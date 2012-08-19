@@ -1,10 +1,7 @@
 <?php
 
 require_once '../StageBloc.php';
-
-$clientId = '<YOUR CLIENT ID>';
-$clientSecret = '<YOUR CLIENT SECRET>';
-$redirectUri = '<YOUR REDIRECT URI>'; // For use with this example, it may make sense to use some sort of localhost here
+require_once 'info.php';
 
 $stagebloc = new Services_StageBloc($clientId, $clientSecret, $redirectUri);
 
