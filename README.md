@@ -6,7 +6,7 @@ A wrapper for the StageBloc API written in PHP with support for authentication u
 
 ## Getting Started
 
-To be able to test your application, you'll first need to [sign up for a StageBloc account](http://www.stagebloc.com/signup). If you've already done that, you'll need to go to the _Applications_ tab of the _Account Setup_ page to register your application and receive a client ID and secret.
+To be able to test your application, you'll first need to [sign up for a StageBloc account](http://www.stagebloc.com/signup). If you've already done that, you'll need to [register your application](http://stagebloc.com/account/admin/management/developers/) and receive a client ID and secret.
 
 ## Examples
 
