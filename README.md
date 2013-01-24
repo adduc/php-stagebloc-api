@@ -32,7 +32,7 @@ The authentication flow is explained below. There is also an example in `example
        
    During this step, the user will be redirected to StageBloc's authentication page.
        
-3. If the authenication is successful, the user will be redirected back to your application's redirect URL. You can then receive an access code.
+3. If the authentication is successful, the user will be redirected back to your application's redirect URL. You can then receive an access code.
 
         try {
            $accessToken = $stagebloc->accessToken($_GET['code']);
