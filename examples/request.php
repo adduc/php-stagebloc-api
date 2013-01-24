@@ -11,7 +11,7 @@ if ( ! empty($_GET) && isset($_GET['accessToken']) )
 }
 
 // Setup our StageBloc OAuth object
-$stagebloc = new Services_StageBloc($clientId, $clientSecret, $redirectUri);
+$stagebloc = new Services_StageBloc($clientId, $clientSecret, $redirectUri, $inDevelopment);
 $stagebloc->setAccessToken($accessToken);
 $stagebloc->setResponseFormat('json'); // XML is default, JSON is also accepted
 
