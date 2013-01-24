@@ -1,7 +1,7 @@
 <?php
 
 require_once '../StageBloc.php';
-require_once 'info.php';
+require_once 'config.php';
 
 $stagebloc = new Services_StageBloc($clientId, $clientSecret, $redirectUri);
 

@@ -1,7 +1,7 @@
 <?php
 
 require_once '../StageBloc.php';
-require_once 'info.php';
+require_once 'config.php';
 
 // If sent here from authentication.php, we can grab the access token from there
 // Note: You should copy this access token into the info.php file for further testing once you receive it
