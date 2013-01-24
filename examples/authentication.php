@@ -3,7 +3,7 @@
 require_once '../StageBloc.php';
 require_once 'info.php';
 
-$stagebloc = new Services_StageBloc($clientId, $clientSecret, $redirectUri);
+$stagebloc = new Services_StageBloc($clientId, $clientSecret, $redirectUri, $inDevelopment);
 
 if ( isset($_GET['code']) )
 {
