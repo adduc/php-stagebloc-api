@@ -118,7 +118,7 @@ class Services_StageBloc
      * @static
      */
     private static $_domains = array(
-        'development' => 'stagebloc.com/sandbox/', // Note: This doesn't actually exist yet
+        'development' => 'stagebloc.dev', // Note: This doesn't actually exist yet
         'production' => 'stagebloc.com'
     );
 
@@ -675,14 +675,14 @@ class Services_StageBloc
         if (preg_match('/^https?\:\/\//', $path)) {
             $url = $path;
         } else {
-            $url = 'http://';
+            $url = 'http' . ( $this->_development ? '' : 's' ) . '://';
             $url .= (!preg_match('/connect/', $path)) ? 'api.' : '';
             $url .= ($this->_development)
                 ? self::$_domains['development']
                 : self::$_domains['production'];
             $url .= '/';
             $url .= ($includeVersion) ? number_format(self::$_apiVersion, 1) . '/' : '';
-            $url .= $path . ($includeVersion ? '.' . end($responseFormatParts) : '' );
+            $url .= $path . ($includeVersion && strpos($path, '.') === false ? '.' . end($responseFormatParts) : '' );
         }
 
         $url .= (count($params)) ? '?' . http_build_query($params) : '';
@@ -785,7 +785,7 @@ class Services_StageBloc
      * @access protected
      */
     protected function _request($url, $curlOptions = array())
-    {
+    {	
         $ch = curl_init($url);
         $options = $this->_curlOptions;
         $options += $curlOptions;
@@ -832,5 +832,4 @@ class Services_StageBloc
             );
         }
     }
-
 }
