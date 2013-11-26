@@ -44,7 +44,7 @@ class Services_StageBloc
      * @access private
      * @static
      */
-    private static $_apiVersion = 2.0;
+    private static $_apiVersion = 3.0;
 
     /**
      * Supported audio MIME types
@@ -785,7 +785,7 @@ class Services_StageBloc
      * @access protected
      */
     protected function _request($url, $curlOptions = array())
-    {	
+    {
         $ch = curl_init($url);
         $options = $this->_curlOptions;
         $options += $curlOptions;
